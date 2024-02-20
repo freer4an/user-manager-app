@@ -5,20 +5,25 @@
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Name</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Last session</th>
+            <th scope="col">Registered at</th>
+            <th scope="col">Status</th>
         </tr>
         </thead>
         <tbody>
             {{#each users}}
             <tr>
                 <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td>{{id}}</td>
+                <td>{{name}}</td>
+                <td>{{email}}</td>
+                <td>{{updated_at}}</td>
+                <td>{{created_at}}</td>
+                <td>{{status}}</td>
             </tr>
             {{else}}
-                No users yet
+                <th scope="row">Empty</th>
             {{/each}}
         </tbody>
     </table>
