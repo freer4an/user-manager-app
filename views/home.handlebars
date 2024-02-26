@@ -1,25 +1,32 @@
-<section class="container">
-    <h1>User management table</h1>
-    <table class="table">
-        <thead class="thead-dark">
+<h1>User management table</h1>
+<table class="table">
+    <thead class="thead-dark">
+    <button id="btn-block" class="btn btn-secondary">Block</button>
+    <button id="btn-unblock" class="btn btn-secondary">Unblock</button>
+    <button id="btn-delete" class="btn btn-danger">Delete</button>
+    <tr>
+        <th scope="col" id="checkbox"><button id="toggleCheckbox">☐</button></th>
+        <th scope="col">N</th>
+        <th scope="col">Name</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Last session</th>
+        <th scope="col">Registered at</th>
+        <th scope="col">Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each users}}
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="row"><input type="checkbox" value="{{id}}"></th>
+            <td>{{@index}}</td>
+            <td>{{name}}</td>
+            <td>{{email}}</td>
+            <td class="date">{{formatDate last_session}}</td>
+            <td class="date">{{formatDate createdAt}}</td>
+            <td>{{status}}</td>
         </tr>
-        </thead>
-        <tbody>
-            {{#each users}}
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            {{else}}
-                No users yet
-            {{/each}}
-        </tbody>
-    </table>
-</section>
+    {{else}}
+        <th scope="row">Empty</th>
+    {{/each}}
+    </tbody>
+</table>
