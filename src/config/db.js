@@ -5,4 +5,6 @@ const db = new Sequelize("user-management", "postgres", "pass", {
     dialect: "postgres"
 })
 
+const sessions = {}
+
 module.exports = db

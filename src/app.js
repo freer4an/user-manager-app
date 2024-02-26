@@ -1,19 +1,30 @@
 const express = require('express')
 const exphbs  = require('express-handlebars');
-const app = express()
-const path = require('path');
-const bcrypt = require('bcrypt');
-const db = require('./config/db');
-const User = require('./models/user')
-const router = require('./routes/routes')
+const cookieParser = require('cookie-parser');
+const authRoutes = require('./routes/authRoutes');
+const protectedRoutes = require('./routes/tableRoute');
 
-app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}));
+const app = express()
+const hbs = exphbs.create({
+    // Specify helpers which are only registered on this instance.
+    defaultLayout: 'main',
+    helpers: {
+        formatDate(date) {return date.toLocaleString('en-GB')},
+    }
+});
+
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.use(express.static("public"));
-app.use("/", require("./routes/routes"));
+app.use(express.json());
+app.use(cookieParser());
+app.use(authRoutes);
+app.use(protectedRoutes);
+app.get('/', (req, res) => {res.redirect("/login")})
 
 const port  = 3000;
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 })

@@ -1,15 +1,16 @@
 const {DataTypes} = require('sequelize')
+const bcrypt = require('bcrypt')
 const db = require('../config/db')
 
 const User = db.define('User', {
     id: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     name: {
         type: DataTypes.STRING,
-        allowedNull: false,
-        unique: true
+        allowedNull: false
     },
     email: {
         type: DataTypes.STRING,
@@ -18,25 +19,31 @@ const User = db.define('User', {
     },
     hashed_password: {
         type: DataTypes.STRING(64),
-        validate: {
-            is: /^[0-9a-f]{64}$/i
-        }
     },
-    created_at: {
-        type: DataTypes.DATE
+    createdAt: {
+        type: DataTypes.DATE,
+        value: DataTypes.NOW,
+        defaultValue: DataTypes.NOW
     },
-    updated_at: {
-        type: DataTypes.DATE
+    last_session: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
     },
     status: {
-        type: DataTypes.ENUM('active', 'blocked')
+        type: DataTypes.ENUM('active', 'blocked'),
+        defaultValue: 'active'
     }
 },
 {
     freezeTableName: true
 })
 
-db.sync({force: true}).then(() => {
+User.beforeCreate((user, options) => {
+    user.hashed_password = bcrypt.hashSync(user.hashed_password, 5)
+})
+
+db.sync({force: false}).then(() => {
     console.log("User table created successfully")
 })
+
 module.exports = User
